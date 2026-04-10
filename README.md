@@ -1,3 +1,9 @@
+> [!NOTE]
+> This is a community-maintained fork of a MIT-licensed student project in the *Effective Programming with Effects* course in winter semester 2025/2026.
+> Be warned that this is not an officially endorsed project, the code in this repository may be not idiomatic Effekt.
+> 
+> The original repository is https://github.com/DennisKleinhans/EffektPy
+
 # EffektPy
 
 EffektPy is a lightweight interpreter for a Python-like programming language, implemented purely in **Effekt**. It features a fully functioning pipeline including a lexer, parser, desugarer, typechecker, and evaluator, all built using algebraic effects to manage state, environments, and error handling.
