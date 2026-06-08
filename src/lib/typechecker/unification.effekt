@@ -115,7 +115,7 @@ def unify(eqs: List[TypeEquation], subst: Substitution): Substitution / { Except
           val newEqs = Cons(returnEq, paramsEqs.append(rest))
           unify(newEqs, subst)
         }
-        case _ => raise(TypeError(), "cannot unify types " ++ lNorm.show ++ " with " ++ rNorm.show ++ " at " ++ do getPos().show)
+        case _ => raise(TypeError(), "cannot unify types " ++ helpers::show(lNorm) ++ " with " ++ helpers::show(rNorm) ++ " at " ++ helpers::show(do commonEffects::getPos()))
       }
     }
   }
@@ -124,7 +124,7 @@ def unify(eqs: List[TypeEquation], subst: Substitution): Substitution / { Except
 /// helper function to bind a type variable to a typing type during unification
 def bind(id: Int, t: TypingType, rest: List[TypeEquation], subst: Substitution): Substitution / { Exception[TypeError], Positioning } = {
   if (occursCheck(id, t)) {
-    raise(TypeError(), "occurs check failed for variable " ++ id.show ++ " at " ++ do getPos().show)
+    raise(TypeError(), "occurs check failed for variable " ++ id.show ++ " at " ++ helpers::show(do commonEffects::getPos()))
   } else {
     val single = map::singletonGeneric(id, t)
     val newSubst: Substitution = subst.put(id, t)

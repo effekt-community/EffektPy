@@ -22,7 +22,7 @@ def handleTypingContext[R](initialContext: Map[String, TypeBinding]) { prog: => 
       context.get(name) match {
         case Some(binding) => resume(binding)
         case None() => {
-          raise(NameError(), "Undefined variable '" ++ name ++ "' at " ++ do getPos().show)
+          raise(NameError(), "Undefined variable '" ++ name ++ "' at " ++ helpers::show(do commonEffects::getPos()))
         }
       }
     }

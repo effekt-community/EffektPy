@@ -72,7 +72,7 @@ def twoPassTypecheck(prog: Program): Map[String, TypeBinding] / { Exception[Type
           case TInt() => ()
           case TString() => ()
           case TDouble() => ()
-          case _ => raise(TypeError(), "Addition requires String, Int, or Double, but got " ++ concrete.show ++ " at " ++ pos.show)
+          case _ => raise(TypeError(), "Addition requires String, Int, or Double, but got " ++ helpers::show(concrete) ++ " at " ++ helpers::show(pos))
         }
       }
     }
@@ -152,7 +152,7 @@ def checkStmt(stmt: Stmt): TypingType / { Typing, Context[TypeBinding], Exceptio
     with at(pos) 
     val binding = do lookup(name)
     if (not(binding.isMutable)) {
-      raise[Unit, TypeError](TypeError(), "Cannot assign to immutable variable '" ++ name ++ "' at " ++ do getPos().show)
+      raise[Unit, TypeError](TypeError(), "Cannot assign to immutable variable '" ++ name ++ "' at " ++ helpers::show(do commonEffects::getPos()))
     }
     do equate(binding.tpe, checkExpr(value), pos)
     TUnit()
@@ -192,14 +192,14 @@ def checkStmt(stmt: Stmt): TypingType / { Typing, Context[TypeBinding], Exceptio
 
   case BreakStmt(pos) => {
     if (not(do isInLoop())) {
-      raise(TypeError(), "'break' is only allowed inside a loop " ++ pos.show)
+      raise(TypeError(), "'break' is only allowed inside a loop " ++ helpers::show(pos))
     }
     TUnit()
   }
 
   case ContinueStmt(pos) => {
     if (not(do isInLoop())) {
-      raise(TypeError(), "'continue' is only allowed inside a loop " ++ pos.show)
+      raise(TypeError(), "'continue' is only allowed inside a loop " ++ helpers::show(pos))
     }
     TUnit()
   }
@@ -416,7 +416,7 @@ def checkExpr(expr: Expr): TypingType / { Typing, Context[TypeBinding], Position
       // special case for 'max' and 'min' to ensure all arguments are numeric and of the same type
       case Variable(name, _) and name == "max" || name == "min" => {
         if (args.size < 2) {
-          raise(TypeError(), "'" ++ name ++ "' requires at least two arguments at " ++ pos.show)
+          raise(TypeError(), "'" ++ name ++ "' requires at least two arguments at " ++ helpers::show(pos))
         }
 
         val memberType = instantiate(TGen(0)) 
@@ -463,14 +463,14 @@ def assertIsNumeric(t: TypingType, pos: Position): Unit / { Typing, Positioning,
   case TInt() => ()
   case TDouble() => ()
   case TVar(_) => do addConstraint(MustBeNumeric(t, pos)) // add a constraint to be checked later
-  case _ => raise(TypeError(), "Expected numeric type, but got " ++ t.show ++ " at " ++ pos.show)
+  case _ => raise(TypeError(), "Expected numeric type, but got " ++ helpers::show(t) ++ " at " ++ helpers::show(pos))
 }
 
 /// validate that a type is numeric (int or double)
 def validateIsNumeric(t: TypingType, pos: Position): Unit / { Exception[TypeError], Positioning } = t match {
   case TInt() => ()
   case TDouble() => ()
-  case _ => raise(TypeError(), "Expected numeric type, but got " ++ t.show ++ " at " ++ pos.show)
+  case _ => raise(TypeError(), "Expected numeric type, but got " ++ helpers::show(t) ++ " at " ++ helpers::show(pos))
 }
 
 /// translate an optional Type annotation into a TypingType

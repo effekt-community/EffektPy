@@ -99,7 +99,7 @@ def desugarStmt(s: surfaceAst::Stmt): coreAst::Stmt / { Exception[DesugarError],
     val binaryExpr = operator match {
       case PlusAssign() => surfaceAst::AddExpr(variableExpr, value, pos)
       case MinusAssign() => surfaceAst::SubExpr(variableExpr, value, pos)
-      case _ => do raise(DesugarError(), "unsupported compound assignment operator in desugaring: " ++ operator.show)
+      case _ => do raise(DesugarError(), "unsupported compound assignment operator in desugaring: " ++ helpers::show(operator))
     }
     coreAst::AssignStmt(name, desugarExpr(binaryExpr), pos)
   }

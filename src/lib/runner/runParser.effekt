@@ -28,7 +28,7 @@ def parseAndDesugar(): PipelineResult[Program] / { Lexer[Token], Exception[Parse
 def runParsing(input: String) : PipelineResult[Program] = {
   try {
     with string::feed(input)
-    with returning::scanner[Char, PipelineResult[Program]]
+    with returning::peeking[Char, PipelineResult[Program]]
     with scanWithPos
     with lexer
     parseAndDesugar()
@@ -45,7 +45,7 @@ def runParsing(input: String) : PipelineResult[Program] = {
 def runParsingFile(path: String) : PipelineResult[Program] / Exception[IOError] = {
   try {
     with readFileUTF8(path) 
-    with returning::scanner[Char, PipelineResult[Program]]
+    with returning::peeking[Char, PipelineResult[Program]]
     with scanWithPos
     with lexer
     parseAndDesugar()

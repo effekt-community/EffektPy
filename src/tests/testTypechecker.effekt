@@ -75,7 +75,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -106,7 +106,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -120,7 +120,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -167,7 +167,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -204,7 +204,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[TypeError].panic
-    with assertThrows[NameError]
+    with testUtils::assertThrows[NameError]
     with mockGetPos
     
     typecheck(prog)
@@ -238,7 +238,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -275,7 +275,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -316,7 +316,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -338,7 +338,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -381,7 +381,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[TypeError].panic
-    with assertThrows[NameError]
+    with testUtils::assertThrows[NameError]
     with mockGetPos
     
     typecheck(prog)
@@ -586,7 +586,7 @@ def main() = mainSuite("typechecker") {
       )
     ]
 
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with on[NameError].panic
     with mockGetPos
 
@@ -608,7 +608,7 @@ def main() = mainSuite("typechecker") {
       )
     ]
 
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with on[NameError].panic
     with mockGetPos
     
@@ -702,7 +702,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -716,7 +716,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -730,7 +730,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -744,7 +744,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -781,7 +781,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -837,7 +837,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[TypeError].panic
-    with assertThrows[NameError]
+    with testUtils::assertThrows[NameError]
     with mockGetPos
     
     typecheck(prog)
@@ -873,7 +873,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1005,7 +1005,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1056,7 +1056,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1131,7 +1131,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1145,7 +1145,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1220,7 +1220,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1235,7 +1235,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1250,7 +1250,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1308,7 +1308,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1342,7 +1342,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1525,7 +1525,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1559,7 +1559,7 @@ def main() = mainSuite("typechecker") {
     ]
 
     with on[NameError].panic
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with mockGetPos
     
     typecheck(prog)
@@ -1614,7 +1614,7 @@ def main() = mainSuite("typechecker") {
   test("typechecker throws on mixed arithmetic with Int and Double") {
     val prog = [cExpr(cAdd(cLit(3.0), cLit(2)))]
     
-    with assertThrows[TypeError]
+    with testUtils::assertThrows[TypeError]
     with on[NameError].panic
     with mockGetPos
     

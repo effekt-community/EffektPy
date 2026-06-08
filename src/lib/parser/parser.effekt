@@ -15,7 +15,7 @@ import src/lib/typechecker/types
 /// Parentheses are handled here so that ( ... ) produces a nested expression.
 def parsePrimaryRaw(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } = {
   val token = do peek()
-  val pos = do getPos()
+  val pos = do commonEffects::getPos()
   token.kind match {
     case Integer(n) => {
       do next()
@@ -61,7 +61,7 @@ def parsePrimaryRaw(): Expr / { Lexer[Token], Positioning, Exception[ParseError]
       FunExpr(params, retType, body, pos)
     }
 
-    case _ => do raise(ParseError(), "expected expression at position " ++ token.position.show ++ " but got " ++ token.kind.show)
+    case _ => do raise(ParseError(), "expected expression at position " ++ helpers::show(token.position) ++ " but got " ++ helpers::show(token.kind))
   }
 }
 
@@ -72,7 +72,7 @@ def parsePrimary(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } 
 
   def go(current: Expr): Expr / { Lexer[Token], Positioning, Exception[ParseError] } = {
     if (check(LParen())) {
-      val callPos = do getPos()
+      val callPos = do commonEffects::getPos()
       do next()
       val args = parseCommaList { parseArgument }
       expect(RParen())
@@ -90,7 +90,7 @@ def parsePrimary(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } 
 /// it falls back to parsePrimary().
 def parseUnary(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } = {
   val token = do peek()
-  val pos = do getPos()
+  val pos = do commonEffects::getPos()
   token.kind match {
     case Not() => { 
       do next()
@@ -112,7 +112,7 @@ def parseUnary(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } = 
 def parseAnd(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } = {
   def go(left: Expr): Expr / { Lexer[Token], Positioning } = {
     val token = do peek()
-    val pos = do getPos()
+    val pos = do commonEffects::getPos()
     token.kind match {
       case And() => { 
         do next()
@@ -131,7 +131,7 @@ def parseAnd(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } = {
 def parseOr(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } = {
   def go(left: Expr): Expr / { Lexer[Token], Positioning } = {
     val token = do peek()
-    val pos = do getPos()
+    val pos = do commonEffects::getPos()
     token.kind match {
       case Or() => { 
         do next()
@@ -154,7 +154,7 @@ def parseMultiplicative(): Expr / { Lexer[Token], Positioning, Exception[ParseEr
   
   def go(left: Expr): Expr / { Lexer[Token], Positioning } = {
     val token = do peek()
-    val pos = do getPos()
+    val pos = do commonEffects::getPos()
     token.kind match {
       case Mult() => {
         do next()
@@ -181,7 +181,7 @@ def parseAdditive(): Expr / { Lexer[Token], Positioning, Exception[ParseError] }
 
   def go(left: Expr): Expr / { Lexer[Token], Positioning } = {
     val token = do peek()
-    val pos = do getPos()
+    val pos = do commonEffects::getPos()
     token.kind match {
       case Plus() => {
         do next()
@@ -207,7 +207,7 @@ def parseAdditive(): Expr / { Lexer[Token], Positioning, Exception[ParseError] }
 def parseComparison(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } = {
   val left = parseAdditive()
   val token = do peek()
-  val pos = do getPos()
+  val pos = do commonEffects::getPos()
   
   // no comparison operator: return left as is
   if (not(isComparisonOp(token.kind))){
@@ -253,7 +253,7 @@ def parseComparison(): Expr / { Lexer[Token], Positioning, Exception[ParseError]
 /// Example: `42 if x > 0 else -1`
 def parseIfExpression(): Expr / { Lexer[Token], Positioning, Exception[ParseError] } = {
   val token = do peek()
-  val pos = do getPos()
+  val pos = do commonEffects::getPos()
   token.kind match {
     case If() => {
       do next()
@@ -286,7 +286,7 @@ def parseExpression(): Expr / { Lexer[Token], Positioning, Exception[ParseError]
 ///  - `parseBlock` is used to parse the lists of statements inside braces.
 def parseStmt(): Stmt / { Lexer[Token], Positioning, Exception[ParseError] } = {
   val token = do peek()
-  val pos = do getPos()
+  val pos = do commonEffects::getPos()
   token.kind match {
     case Val() => {
       do next()
@@ -465,9 +465,9 @@ def parseType(): Type / { Lexer[Token], Exception[ParseError], Positioning } = {
       [extractType(id)]
     }
 
-    case LowerIdentifier(id) => raise(ParseError(), "syntax error at position " ++ token.position.show ++ ": type annotations must start with upper case char")
+    case LowerIdentifier(id) => raise(ParseError(), "syntax error at position " ++ helpers::show(token.position) ++ ": type annotations must start with upper case char")
 
-    case _ => raise(ParseError(), "expected type name (UpperIdentifier) at position " ++ token.position.show ++ " but got " ++ token.kind.show)
+    case _ => raise(ParseError(), "expected type name (UpperIdentifier) at position " ++ helpers::show(token.position) ++ " but got " ++ helpers::show(token.kind))
   }
 
   val nextToken = do peek()
@@ -479,7 +479,7 @@ def parseType(): Type / { Lexer[Token], Exception[ParseError], Positioning } = {
     }
     case _ => paramTypes match {
       case Cons(single, Nil()) => single
-      case _ => raise(ParseError(), "expected '->' for function type at position " ++ nextToken.position.show)
+      case _ => raise(ParseError(), "expected '->' for function type at position " ++ helpers::show(nextToken.position))
     }
   }
 }
