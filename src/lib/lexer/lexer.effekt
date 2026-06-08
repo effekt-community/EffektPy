@@ -43,7 +43,7 @@ def scanWithPos[R]() { prog: => R / { Scan[Char], Positioning } }: R / Scan[Char
           // We rethrow the skip to the underlying handler (`do skip()`).
           // That underlying skip will not trigger another read, since the lower
           // scanner already buffered the character during peek.
-          do stream::next()
+          scanner::skip()
           // Now we know the character was consumed → update position.
           updatePos(c)
           // Clear peek cache
@@ -57,7 +57,7 @@ def scanWithPos[R]() { prog: => R / { Scan[Char], Positioning } }: R / Scan[Char
           val c = do stream::peek()
           // Then we perform the actual skip (again rethrown)
           updatePos(c)
-          do stream::next()
+          scanner::skip()
           return c
         }
       }
@@ -143,7 +143,7 @@ def nextToken(): Token / { Scan[Char], stop, Exception[LexerError], Positioning 
     // check for fractional part
     if (next == '.') {
       // consume '.'
-      do stream::next()
+      scanner::skip()
 
       // read fractional part as string to avoid precision issues like 123.000001
       val fractionalPart = string::collect {
@@ -171,7 +171,7 @@ def nextToken(): Token / { Scan[Char], stop, Exception[LexerError], Positioning 
 
   def readStringLikeToken(pos: Position, delim: Char): Token / { Scan[Char], stop, Exception[LexerError] } = {
     // consume opening "
-    do stream::next()
+    scanner::skip()
 
     // collect string content, handling escape sequences
     val strValue = try {
@@ -183,9 +183,9 @@ def nextToken(): Token / { Scan[Char], stop, Exception[LexerError], Positioning 
           if (c == delim) {
             () // end of string literal, stop collecting
           } else if (c == '\\') {
-            do stream::next() // consume the \
+            scanner::skip() // consume the \
             val escaped = do stream::peek()
-            do stream::next() // consume the char after the \
+            scanner::skip() // consume the char after the \
             
             // handle escape sequences
             escaped match {
@@ -202,7 +202,7 @@ def nextToken(): Token / { Scan[Char], stop, Exception[LexerError], Positioning 
             }
             loop() 
           } else {
-            do stream::next()
+            scanner::skip()
             do emit(c) // normal char
             loop() 
           }
@@ -215,7 +215,7 @@ def nextToken(): Token / { Scan[Char], stop, Exception[LexerError], Positioning 
 
     // expect closing "
     if (do stream::peek() == delim) {
-      do stream::next()
+      scanner::skip()
     } else {
       do raise(LexerError(), "Expected " ++ delim.show ++ " at end of string")
     }
@@ -241,83 +241,83 @@ def nextToken(): Token / { Scan[Char], stop, Exception[LexerError], Positioning 
     readStringLikeToken(pos, '\'')
   } else if (c == '=') {
     // consume first char 
-    do stream::next()
+    scanner::skip()
     // second lookahead to recognize two char tokens
     val next = do stream::peek()
 
     if(next == '=') {
-      do stream::next()
+      scanner::skip()
       Token(Equal(), pos)
     } else {
       Token(Assign(), pos)
     }
   } else if (c == '!') {
     // consume '!' and check for '!='
-    do stream::next()
+    scanner::skip()
     readIf('=')
     Token(NotEqual(), pos)
   } else if (c == '<') {
-    do stream::next()
+    scanner::skip()
     val next = do stream::peek()
     if (next == '=') {
-      do stream::next()
+      scanner::skip()
       Token(LessEqual(), pos)
     } else {
       Token(Less(), pos)
     }
   } else if (c == '>') {
-    do stream::next()
+    scanner::skip()
     val next = do stream::peek()
     if (next == '=') {
-      do stream::next()
+      scanner::skip()
       Token(GreaterEqual(), pos)
     } else {
       Token(Greater(), pos)
     }
   } else if (c == '+') {
-    do stream::next()
+    scanner::skip()
     val next = do stream::peek()
     if (next == '=') {
-      do stream::next()
+      scanner::skip()
       Token(PlusAssign(), pos)
     } else {
       Token(Plus(), pos)
     }
   } else if (c == '-') {
-    do stream::next()
+    scanner::skip()
     val next = do stream::peek()
     if (next == '=') {
-      do stream::next()
+      scanner::skip()
       Token(MinusAssign(), pos)
     } else if (next == '>') {
-      do stream::next()
+      scanner::skip()
       Token(Arrow(), pos)
     } else {
       Token(Minus(), pos)
     }
   } else if (c == '*') {
-    do stream::next()
+    scanner::skip()
     Token(Mult(), pos)
   } else if (c == '/') {
-    do stream::next()
+    scanner::skip()
     Token(Div(), pos)
   } else if (c == '(') {
-    do stream::next()
+    scanner::skip()
     Token(LParen(), pos)
   } else if (c == ')') {
-    do stream::next()
+    scanner::skip()
     Token(RParen(), pos)
   } else if (c == '{') {
-    do stream::next()
+    scanner::skip()
     Token(LBrace(), pos)
   } else if (c == '}') {
-    do stream::next()
+    scanner::skip()
     Token(RBrace(), pos)
   } else if (c == ':') {
-    do stream::next()
+    scanner::skip()
     Token(Colon(), pos)
   } else if (c == ',') {
-    do stream::next()
+    scanner::skip()
     Token(Comma(), pos)
   } else {
     do raise(LexerError(), "can not tokenize char: " ++ "'" ++ c.show ++ "'" ++ " at " ++ helpers::show(pos))
