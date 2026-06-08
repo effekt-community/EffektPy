@@ -101,14 +101,14 @@ def evalExpr(expr: Expr): Value / { Context[Address], Store, Exception[RuntimeEr
         if (r != 0) {
           VInt(l / r)
         } else {
-          do raise(errors::RuntimeError(), "Division by zero at " ++ do getPos().show)
+          do raise(errors::RuntimeError(), "Division by zero at " ++ helpers::show(do commonEffects::getPos()))
         }
       }
       case (VDouble(l), VDouble(r)) => {
         if (r != 0.0) {
           VDouble(l / r)
         } else {
-          do raise(errors::RuntimeError(), "Division by zero at " ++ do getPos().show)
+          do raise(errors::RuntimeError(), "Division by zero at " ++ helpers::show(do commonEffects::getPos()))
         }
       }
       case _ => do raise(errors::RuntimeError(), "Type error in division")
@@ -368,7 +368,7 @@ def evalExpr(expr: Expr): Value / { Context[Address], Store, Exception[RuntimeEr
        
       }
 
-      case _ => raise(errors::RuntimeError(), "trying to call a non-function value at " ++ pos.show)
+      case _ => raise(errors::RuntimeError(), "trying to call a non-function value at " ++ helpers::show(pos))
     }
   }
 }

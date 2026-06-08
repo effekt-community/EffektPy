@@ -22,7 +22,7 @@ def handleRuntimeContext[R](initEnv: Map[String, Address]) { prog: => R / { Cont
     def lookup(name) = {
       context.get(name) match {
         case Some(addr) => resume(addr)
-        case None() => do raise(errors::RuntimeError(), "Undefined variable '" ++ name ++ "' at " ++ do getPos().show)
+        case None() => do raise(errors::RuntimeError(), "Undefined variable '" ++ name ++ "' at " ++ helpers::show(do commonEffects::getPos()))
       }
     }
 

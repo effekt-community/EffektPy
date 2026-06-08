@@ -25,14 +25,14 @@ def main() = mainSuite("lexer") {
   def fullLexerHandler(input: String, assertLexerError: Bool) { prog: => Unit / { Lexer[Token] } } = {
     if (assertLexerError) {
       with feed(input)
-      with scanner[Char]
+      with peeking[Char]
       with scanWithPos
-      with on[LexerError].assertThrown
+      with on[LexerError].testUtils::assertThrown
       with lexer
       prog()
     } else {
       with feed(input)
-      with scanner[Char]
+      with peeking[Char]
       with scanWithPos
       with on[LexerError].panic
       with lexer
@@ -79,7 +79,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false) 
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     
     assertEqual(tokens, expected)
   }
@@ -98,7 +98,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -116,7 +116,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -124,14 +124,14 @@ def main() = mainSuite("lexer") {
     val input = "val x = 2;"
 
     with fullLexerHandler(input, true)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
   }
 
   test("lexer throws LexerError if an identifier starts with a Integer") {
     val input = "val 1x = 2"
 
     with fullLexerHandler(input, true)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
   }
 
   test("lexer recognizes logical operators (and, or, not)") {
@@ -146,7 +146,7 @@ def main() = mainSuite("lexer") {
     while (iter < inputs.size) {
       with on[OutOfBounds].panic
       with fullLexerHandler(inputs.get(iter), false)
-      val tokens = collectTokens(Nil()) { do next() }
+      val tokens = collectTokens(Nil()) { do effects::next() }
       assertEqual(tokens, expectedOutputs.get(iter))
       iter = iter + 1
     }
@@ -177,7 +177,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -198,7 +198,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -215,7 +215,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -237,7 +237,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -256,7 +256,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -286,7 +286,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -343,7 +343,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -362,7 +362,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -377,7 +377,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -392,7 +392,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -411,7 +411,7 @@ def main() = mainSuite("lexer") {
     ]
 
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -419,7 +419,7 @@ def main() = mainSuite("lexer") {
     val input = "val badString = \"This string never ends..."
 
     with fullLexerHandler(input, true)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
   }
 
   test("lexer recognizes double literals") {
@@ -436,7 +436,7 @@ def main() = mainSuite("lexer") {
       Token(Double(0.001), Position(2, 17))
     ]
     with fullLexerHandler(input, false)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
     assertEqual(tokens, expected)
   }
 
@@ -444,13 +444,13 @@ def main() = mainSuite("lexer") {
     val input = "val badDouble = 3.14.15"
 
     with fullLexerHandler(input, true)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
   }
 
   test("lexer raises LexerError on double literal with missing fractional part") {
     val input = "val incomplete = 42."
 
     with fullLexerHandler(input, true)
-    val tokens = collectTokens(Nil()) { do next() }
+    val tokens = collectTokens(Nil()) { do effects::next() }
   }
 }

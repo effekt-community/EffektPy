@@ -33,7 +33,7 @@ def readInputBlock(): String / REPLConsole = {
   var isEmpty = true
   var result = ""
 
-  with stringBuffer
+  with flushableStringBuffer
 
   while (reading) {
     if (isEmpty) {
@@ -114,7 +114,7 @@ def startRepl() = {
                   if (evalState.value is VUnit()) {
                     ()
                   } else {
-                    do writeLine(evalState.value.show)
+                    do writeLine(helpers::show(evalState.value))
                   }
                   
                 }

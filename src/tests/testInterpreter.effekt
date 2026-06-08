@@ -153,7 +153,7 @@ def main() = mainSuite("interpreter") {
     )
 
     with mockGetPos 
-        with assertThrows[RuntimeError]
+    with testUtils::assertThrows[RuntimeError]
     evalProgram([prog])
     ()
   }
@@ -698,7 +698,7 @@ def main() = mainSuite("interpreter") {
     ]
 
     with mockGetPos 
-        with assertThrows[RuntimeError]
+    with testUtils::assertThrows[RuntimeError]
     evalProgram(prog)
     ()
   }
@@ -714,7 +714,7 @@ def main() = mainSuite("interpreter") {
     ]
 
     with mockGetPos 
-        with assertThrows[RuntimeError]
+    with testUtils::assertThrows[RuntimeError]
     evalProgram(prog)
     ()
   }
@@ -726,7 +726,7 @@ def main() = mainSuite("interpreter") {
     ]
 
     with mockGetPos 
-        with assertThrows[RuntimeError]
+    with testUtils::assertThrows[RuntimeError]
     evalProgram(prog)
     ()
   }
@@ -742,7 +742,7 @@ def main() = mainSuite("interpreter") {
     ]
 
     with mockGetPos 
-        with assertThrows[RuntimeError]
+    with testUtils::assertThrows[RuntimeError]
     evalProgram(prog)
     ()
   }

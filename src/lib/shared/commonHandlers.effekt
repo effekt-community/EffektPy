@@ -6,7 +6,7 @@ import src/lib/shared/commonTypes
 
 /// executes a block of code at a specific source code position
 def at[R](p: Position) { block: => R / Positioning }: R / Positioning = {
-  val old = do getPos()
+  val old = do commonEffects::getPos()
   do setPos(p)
   val res = block()
   do setPos(old)
